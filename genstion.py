@@ -180,3 +180,28 @@ def update_chart(frame):
 fig = plt.figure()
 ani = FuncAnimation(fig, update_chart, interval=1000)  # 每秒更新一次
 plt.show()
+
+
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+# 假设这个函数返回实时设备状态数据
+def get_device_data():
+    # 示例数据，实际你应该从数据库获取
+    data = [
+        ["2024-10-22T10:00:00+0000", 1],  # 时间戳和状态
+        ["2024-10-22T10:01:00+0000", 0],
+        ["2024-10-22T10:02:00+0000", 1]
+    ]
+    return data
+
+# 提供一个路由，返回 JSON 数据给前端
+@app.route('/get_device_data', methods=['GET'])
+def get_device_data_route():
+    data = get_device_data()  # 调用你的函数获取设备状态数据
+    return jsonify(data)
+
+# 启动 Flask 应用
+if __name__ == '__main__':
+    app.run(debug=True)

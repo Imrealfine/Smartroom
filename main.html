@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Room Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        canvas {
+            max-width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Smart Room Management</h1>
+
+        <!-- Section 1: Import Data -->
+        <div class="section" id="section1">
+            <h2>1. Import Data from Excel</h2>
+            <button onclick="importData()">Import XLSX Data</button>
+        </div>
+
+        <!-- Section 2: Create/Update Rooms -->
+        <div class="section" id="section2">
+            <h2>2. Create/Update Rooms</h2>
+            <button onclick="createRoom()">Create/Update Room</button>
+        </div>
+
+        <!-- Section 3: Update and Delete Rooms -->
+        <div class="section" id="section3">
+            <h2>3. Update and Delete Rooms</h2>
+            <button onclick="updateRoom()">Update Room</button>
+            <button onclick="deleteRoom()">Delete Room</button>
+        </div>
+
+        <!-- Section 4: View Available Rooms -->
+        <div class="section" id="section4">
+            <h2>4. View Available Rooms</h2>
+            <button onclick="listRooms()">List Rooms</button>
+        </div>
+
+        <!-- Section 5: View Room Info -->
+        <div class="section" id="section5">
+            <h2>5. View Room Information</h2>
+            <button onclick="viewRoomInfo()">View Room Info</button>
+        </div>
+
+        <!-- Section 6: Real-Time Line Chart -->
+        <div class="section" id="section6">
+            <h2>6. Real-Time Line Chart (Light, AC, Windows, Doors)</h2>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <!-- Section 7: CO2 and Temperature Chart -->
+        <div class="section" id="section7">
+            <h2>7. CO2, Temperature and Occupancy Over Time</h2>
+            <canvas id="co2Chart"></canvas>
+        </div>
+
+        <!-- Section 8: Export Room Structure to CSV -->
+        <div class="section" id="section8">
+            <h2>8. Export Room Structure to CSV</h2>
+            <button onclick="exportCSV()">Export CSV</button>
+        </div>
+
+        <!-- Section 9: Generate Random CO2 and Temp Values -->
+        <div class="section" id="section9">
+            <h2>9. Generate Random CO2/Temperature Values</h2>
+            <button onclick="generateRandomValues()">Generate Values</button>
+        </div>
+
+        <!-- Section 10: Live Data Visualization -->
+        <div class="section" id="section10">
+            <h2>10. Live Data Visualization (CO2, Temp, Lights, Fans, Windows, Doors)</h2>
+            <canvas id="liveDataChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Section 1: Import Data from Excel
+        function importData() {
+            alert("Importing data...");
+            // Add AJAX or Fetch call to backend API for importing data
+        }
+
+        // Section 2: Create/Update Rooms
+        function createRoom() {
+            alert("Creating/Updating room...");
+            // Add logic to send data to backend to create/update a room
+        }
+
+        // Section 3: Update and Delete Rooms
+        function updateRoom() {
+            alert("Updating room...");
+            // Add logic to update room
+        }
+
+        function deleteRoom() {
+            alert("Deleting room...");
+            // Add logic to delete room
+        }
+
+        // Section 4: View Available Rooms
+        function listRooms() {
+            alert("Listing rooms...");
+            // Add logic to fetch and display list of rooms
+        }
+
+        // Section 5: View Room Information
+        function viewRoomInfo() {
+            alert("Viewing room info...");
+            // Add logic to fetch and display room information
+        }
+
+        // Section 6: Real-Time Line Chart
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: [],  // Time labels
+                datasets: [{
+                    label: 'Device State',
+                    data: [],  // State values
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time' }
+                    },
+                    y: {
+                        title: { display: true, text: 'State (On/Off)' },
+                        min: 0,
+                        max: 1
+                    }
+                }
+            }
+        });
+
+        // Section 7: CO2, Temperature, and Occupancy Chart
+        const co2Ctx = document.getElementById('co2Chart').getContext('2d');
+        const co2Chart = new Chart(co2Ctx, {
+            type: 'line',
+            data: {
+                labels: [],  // Time labels
+                datasets: [{
+                    label: 'CO2 Levels',
+                    data: [],  // CO2 values
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Temperature',
+                    data: [],  // Temperature values
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Occupancy',
+                    data: [],  // Occupancy values
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Value' },
+                    }
+                }
+            }
+        });
+
+        // Section 8: Export Room Structure to CSV
+        function exportCSV() {
+            alert("Exporting room structure...");
+            // Add logic to export room data to CSV
+        }
+
+        // Section 9: Generate Random CO2/Temperature Values
+        function generateRandomValues() {
+            alert("Generating random values...");
+            // Add logic to generate random values for CO2 and temperature
+        }
+
+        // Section 10: Live Data Visualization
+        const liveCtx = document.getElementById('liveDataChart').getContext('2d');
+        const liveDataChart = new Chart(liveCtx, {
+            type: 'line',
+            data: {
+                labels: [],  // Time labels
+                datasets: [{
+                    label: 'CO2',
+                    data: [],  // CO2 values
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Temperature',
+                    data: [],  // Temperature values
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Light',
+                    data: [],  // Light status
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Fan',
+                    data: [],  // Fan status
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Value' },
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
