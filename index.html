@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Room Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Smart Room Management</h1>
+
+    <!-- Section to create/update a room -->
+    <h2>Create/Update Room</h2>
+    <button onclick="createRoom()">Create/Update Room</button>
+
+    <!-- Section to delete a room -->
+    <h2>Delete Room</h2>
+    <button onclick="deleteRoom()">Delete Room</button>
+
+    <!-- Section to list all rooms -->
+    <h2>List Rooms</h2>
+    <button onclick="listRooms()">List Rooms</button>
+
+    <!-- Section to get room info -->
+    <h2>Get Room Info</h2>
+    <button onclick="getRoomInfo()">Get Room Info</button>
+
+    <!-- Section to display device data in real-time -->
+    <h2>Real-Time Device Data</h2>
+    <canvas id="deviceChart" width="400" height="200"></canvas>
+
+    <script>
+        // 通过 Fetch 调用后端的API
+
+        // 创建/更新房间
+        function createRoom() {
+            const roomData = {
+                room_name: "Room103",  // 示例房间数据
+                size_m2: 120
+            };
+
+            fetch('/create_room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(roomData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // 删除房间
+        function deleteRoom() {
+            const roomName = 'Room103';  // 示例房间名
+            fetch(`/delete_room/${roomName}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 列出所有房间
+        function listRooms() {
+            fetch('/list_rooms')
+                .then(response => response.json())
+                .then(rooms => {
+                    alert(`Rooms: ${rooms.join(', ')}`);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 获取房间信息
+        function getRoomInfo() {
+            const roomName = 'Room101';  // 示例房间名
+            fetch(`/get_room_info/${roomName}`)
+                .then(response => response.json())
+                .then(info => {
+                    alert(`Room Info: ${JSON.stringify(info)}`);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 实时获取设备数据并更新图表
+        const ctx = document.getElementById('deviceChart').getContext('2d');
+        const deviceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Device State',
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: { title: { display: true, text: 'Timestamp' } },
+                    y: { title: { display: true, text: 'State (On/Off)' }, min: 0, max: 1 }
+                }
+            }
+        });
+
+        function fetchDeviceData() {
+            fetch('/get_device_data')
+                .then(response => response.json())
+                .then(data => {
+                    deviceChart.data.labels = [];
+                    deviceChart.data.datasets[0].data = [];
+
+                    data.forEach(entry => {
+                        deviceChart.data.labels.push(new Date(entry[0]));
+                        deviceChart.data.datasets[0].data.push(entry[1]);
+                    });
+
+                    deviceChart.update();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 每秒钟更新一次设备数据
+        setInterval(fetchDeviceData, 1000);
+    </script>
+</body>
+</html>

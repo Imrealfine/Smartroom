@@ -18,7 +18,7 @@ def import_all_sheets(file_path):
         
         # 将每张表的数据导入数据库，表名使用工作表名
         df.to_sql(sheet_name, conn, if_exists='replace', index=False)
-        print(f"Sheet '{sheet_name}' has been imported.")
+        #print(f"Sheet '{sheet_name}' has been imported.")
     
     conn.close()
 
@@ -66,7 +66,7 @@ def delete_room(room_name):
     conn.close()
 
 # 示例调用
-#delete_room('room888')
+#delete_room('Room888')
 
 def list_rooms():
     conn = sqlite3.connect('smartroom.db')
@@ -104,7 +104,7 @@ def query_full_room_info(room_name):
 
     conn.close()
 # 示例调用查询完整的房间信息
-query_full_room_info('Room101')
+#query_full_room_info('Room101')
 
 
 # 示例调用
@@ -177,14 +177,17 @@ def update_chart(frame):
     plt.tight_layout()
 
 # 设置动画，使用 FuncAnimation 实现实时更新
-fig = plt.figure()
-ani = FuncAnimation(fig, update_chart, interval=1000)  # 每秒更新一次
-plt.show()
+#fig = plt.figure()
+#ani = FuncAnimation(fig, update_chart, interval=1000)  # 每秒更新一次
+#plt.show()
 
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app)  # 启用所有来源的跨域请求
 
 # 假设这个函数返回实时设备状态数据
 def get_device_data():
@@ -201,6 +204,34 @@ def get_device_data():
 def get_device_data_route():
     data = get_device_data()  # 调用你的函数获取设备状态数据
     return jsonify(data)
+
+# 添加或更新房间的API
+@app.route('/create_room', methods=['POST'])
+def create_room_route():
+    data = request.json  # 前端会以JSON格式发送房间数据
+    room_name = data.get('room_name')
+    size_m2 = data.get('size_m2')
+    create_or_update_room(room_name, size_m2)
+    return jsonify({"message": f"Room {room_name} created/updated successfully!"})
+
+# 删除房间的API
+@app.route('/delete_room/<room_name>', methods=['DELETE'])
+def delete_room_route(room_name):
+    delete_room(room_name)
+    return jsonify({"message": f"Room {room_name} deleted successfully!"})
+
+# 列出房间的API
+@app.route('/list_rooms', methods=['GET'])
+def list_rooms_route():
+    rooms = list_rooms()
+    return jsonify(rooms)
+
+# 获取房间信息的API
+@app.route('/get_room_info/<room_name>', methods=['GET'])
+def get_room_info_route(room_name):
+    room_info = query_full_room_info(room_name)
+    return jsonify(room_info)
+
 
 # 启动 Flask 应用
 if __name__ == '__main__':
