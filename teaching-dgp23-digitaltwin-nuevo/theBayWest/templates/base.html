@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href=" {{ url_for('static', filename='css/main.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <title>TheBayWest</title>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">
+                <img id="logo" src="{{ url_for('static', filename='images/Logo_DGPCT.jpg')}}">
+            </div> 
+            <div class="import_export_btns">
+                <button id="popupUploadFile" name="import_btn" type="file">Import XLSX</button>
+                <div id="popupUpload" class="modal">
+                    <div class="modal-content">
+                        <button id="closePopupUpload"> Close </button>
+                    <h2>Upload file</h2>
+                        <form method="POST" action="/import" enctype="multipart/form-data">
+                            <p><input type="file" name="file" accept=".xls,.xlsx"></p>
+                            <p><button type="submit">Import Data</button></p>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                <form action="/export" method="post">
+                    <button name="export_btn" type="file">Export CSV</button>
+                </form>
+            </div>
+        </div>
+        {% block body %}{% endblock %}
+    </body>
+</html>

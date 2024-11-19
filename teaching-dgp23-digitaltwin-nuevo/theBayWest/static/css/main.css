@@ -1,0 +1,514 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+button {
+    background-color: #2696f1;
+    color: #ffffff;
+    padding: 7px 20px 7px 20px;
+    border-radius: 12px;
+    margin: 10px 0 10px 0;
+    border: none;
+    font-size: 18px;
+    text-align: center;
+    border: solid 2px lightgrey;
+}
+
+button:hover {
+    border: solid 2px black;
+}
+
+button:active {
+    color: #d2edff;
+    border: solid 1px black;
+    background-color: #367fc9;
+}
+
+.header {
+    /* background-color: aquamarine; */
+    display: inline-flex;
+    height: 5%;
+    width: 100%;
+}
+
+.logo {
+    /* background-color: brown; */
+    margin-left: 41%;
+}
+
+#logo {
+    padding-top: 1.75%;
+    width: 350px;
+    max-height: 250px;
+}
+
+.import_export_btns {
+    /* background-color: red; */
+    /* padding-top: 1.75%; */
+    padding-top: 2%;
+    margin-left: auto;
+    margin-right: 5%;
+}
+
+.delete img {
+    height: 50px;
+    width: 50px;
+}
+
+.right-align {
+    text-align: right;
+    margin-right: 7.5%;
+}
+
+#search-div {
+    padding-right: 20%;
+    background-color: red;
+}
+
+#search-icon {
+    transition: none;
+}
+
+#search-icon:hover {
+    transform: none;
+}
+
+
+/* ↓↓↓↓ _____________La table__________ ↓↓↓↓  */
+
+table {
+    /* border-spacing: 30px; */
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    width: 85%;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+td,
+th {
+    padding: 12px 12px 12px 12px;
+}
+
+td {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.border-div {
+    border: 1px solid black;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#no-rooms-txt {
+    font-size: 25px
+}
+
+
+/* ↓↓↓↓ _____________testing__________ ↓↓↓↓  */
+
+.icon-btn {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+    transition: transform .7s ease-in-out;
+    margin: 0px;
+    padding: 0;
+}
+
+.icon-btn:hover {
+    transform: rotate(360deg);
+    border: none;
+    background-color: inherit;
+}
+
+.icon-btn:active {
+    background-color: none;
+}
+
+.icon-bin {
+    border: 0;
+    /* width: 70px;
+    height: 70px; */
+    width: 60px;
+    height: 60px;
+    /* border-radius: 12px; */
+    border-radius: 50%;
+}
+
+.icon-gear {
+    border: 0;
+    /* width: 70px;
+    height: 70px; */
+    width: 37.5px;
+    height: 37.5px;
+    /* border-radius: 12px; */
+    border-radius: 50%;
+}
+
+.icon-fan,
+.icon-light {
+    border: 0;
+    /* width: 70px;
+    height: 70px; */
+    width: 45px;
+    height: 45px;
+    /* border-radius: 12px; */
+    border-radius: 50%;
+}
+
+.icon-window {
+    border: 0;
+    width: 45px;
+    height: 45px;
+}
+
+.icon-graph {
+    border: 0;
+    width: 100px;
+    height: 150px;
+}
+
+.icon-bin:active,
+.icon-gear:active,
+.icon-fan:active {
+    border: solid 3px black;
+}
+
+.icon-window:active {
+    border: solid 3px black;
+}
+
+.search-btn:hover {
+    border: none;
+    background-color: none;
+}
+
+.search-btn {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+    margin: 0px;
+    padding: 0;
+}
+
+.search-btn:active {
+    background-color: none;
+}
+
+.search-icon {
+    border: 0;
+    /* width: 70px;
+    height: 70px; */
+    width: 20.5px;
+    height: 20.5px;
+    /* border-radius: 12px; */
+    border-radius: 50%;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    justify-content: center;
+    overflow-y: scroll;
+    background-color: #fff;
+    max-width: 30%;
+    max-height: 40%;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content-graph {
+    align-content: center;
+    overflow-y: scroll;
+    background-color: #fff;
+    width: 70%;
+    height: 85%;
+    margin-top: 50px;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.delete-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0;
+}
+
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+}
+
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-options {
+    font-size: x-small
+}
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 17px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.window-row,
+.light-row,
+.door-row {
+    display: flex;
+    /* Use flexbox */
+    align-items: center;
+    /* Align items vertically in the center */
+    justify-content: center;
+}
+
+
+/* Style the <p> tag within .window-row */
+
+.window-row p,
+.light-row p,
+.door-row p {
+    margin-left: 5px;
+    margin-right: 5px;
+    /* Adjust spacing between elements if needed */
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns */
+    gap: 10px;
+    /* Adjust gap between items */
+    justify-content: center;
+    /* Center grid horizontally */
+    align-items: center;
+    /* Center grid vertically */
+    max-width: 600px;
+    /* Adjust maximum width as needed */
+    margin: 0 auto;
+    /* Center the grid container */
+}
+
+.room-item {
+    background-color: #e0e0e0;
+    /* Set background color */
+    padding: 20px;
+    /* Adjust padding as needed */
+    border-radius: 5px;
+    /* Apply rounded corners */
+    text-align: center;
+    /* Adjust width and height as needed for squares */
+    width: 100%;
+    /* Set width */
+    height: 100px;
+    /* Set height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    /* Include padding and borders within the width/height */
+}
+
+/* Add styling for the selected room */
+.room-item.selected {
+    background-color: #a1a1a1;
+    /* Change background color for selected item */
+    /* Add any additional styling for the selected item */
+}
+
+/* Next to Async Divs*/
+
+.metrics_label {
+    border: 1.5px solid black;
+    padding: 10px;
+    /* width: 85%; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.circle {
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 105px;
+    height: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    font-size: 20px;
+}
+
+/* Style for the custom snackbar container */
+#custom-snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 16px;
+}
+
+/* Show animation for the custom snackbar */
+#custom-snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animation keyframes for showing and hiding the custom snackbar */
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin: auto;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    width: fit-content;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+}

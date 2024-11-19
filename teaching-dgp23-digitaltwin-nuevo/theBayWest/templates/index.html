@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+{#
+<hr> #}
+<br>
+<br>
+<h1><u>Room List</u></h1>
+
+<div class="right-align">
+    <form action="/" method="POST">
+        <input type="text" placeholder="Search Room" name="search_text">
+        <!-- <input type="submit" value="Add Room"> -->
+        <!-- <button>Search</button> -->
+        <!-- <button>Search</button> -->
+        <button class="search-btn"><img src="./static/images/lens.jpg" class="search-icon"></button>
+    </form>
+</div>
+<br>
+<br>
+<!-- </div> -->
+
+
+<!-- <div> 
+    <h2>ROOM 1</h2>
+    <div>
+    <button class="delete" onclick="supp_room()" > <img src="./static/images/delete.png"> </button>
+    </div>    
+</div> -->
+
+
+
+<div class="content">
+    {% if rooms|length < 1 %} <div class="border-div">
+        <p id="no-rooms-txt">There are not rooms at the moment, create one first
+        <p>
+</div>
+{% else %}
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Temp</th>
+        <th>People</th>
+        <th>Co2</th>
+        <th>
+            Graph btn
+            <br>
+            &
+            <br>
+            Size (m²)
+        </th>
+        <th>Doors</th>
+        <th>Lights</th>
+        <th>Ventilators</th>
+        <th>windows</th>
+        <th>Edit btn</th>
+        <th>Delete btn</th>
+    </tr>
+    {% for room in rooms %}
+    <tr>
+        <td class="{{room.name}}Color">{{ room.name }}</td>
+        <td>
+            {# Temp Async data #}
+
+            <div class="dynamic-temperature{{room.name}}">
+                <span class="circle">
+                    <span class="async-data"></span>&nbspºC
+                </span>
+                <br>
+                <br>
+                <span class="metrics_label">
+                    Temperature
+                </span>
+            </div>
+        </td>
+        <td>
+            {# People Async data #}
+
+            <div class="dynamic-people{{room.name}}">
+                <span class="circle">
+                    <span class="async-data"></span>&nbsppeople
+                </span>
+                <br>
+                <br>
+                <span class="metrics_label">
+                    People
+                </span>
+            </div>
+        </td>
+        <td>
+            {# CO2 Async data #}
+
+            <div class="dynamic-co2{{room.name}}">
+                <span class="circle">
+                    <span class="async-data"></span>&nbspppm
+                </span>
+                <br>
+                <br>
+                <span class="metrics_label">
+                    CO2
+                </span>
+            </div>
+        </td>
+        <script type="text/javascript">
+            initDynamicElements("{{room.name}}");
+        </script>
+        <td>
+            <button class="icon-btn buttonPopupGraph"><img src="./static/images/graph.png" class="icon-graph"></button>
+            <div class="modal popupGraph">
+                <div class="modal-content-graph">
+                    <button class="closePopupGraph">Close</button>
+                    <h2>Graphs - {{ room.name }}</h2>
+                    <!-- Tab links -->
+                    <div class="tab">
+                        {% for chartType in ['Temperature', 'CO2', 'People', 'Ventilators', 'Windows', 'Lights', 'Doors'] %}
+                        <button
+                            id="{{ chartType }}_{{ room.name }}_button"
+                            class="tablinks"
+                            onclick="openChart(event, '{{ chartType }}_{{ room.name }}', '{{room.name}}')">
+                            {{ chartType }}
+                        </button>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Tab content -->
+                    {% for chartType in ['Temperature', 'CO2', 'People', 'Ventilators', 'Windows', 'Lights', 'Doors'] %}
+                    <div id="{{ chartType }}_{{ room.name }}" class="tabcontent tabcontent_{{room.name}}">
+                        <div class="chart-container" style="width:75%;">
+                            <canvas id="{{ chartType.lower() }}_{{ room.name }}"></canvas>
+                            <script>
+                                // Call the JavaScript function to initialize the chart for each room
+                                initialize{{ chartType }}Chart('{{ room.name }}');
+                            </script>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            {{ room.size }} m²
+            <script>
+                document.getElementById("Temperature_{{ room.name }}_button").click();
+            </script>
+        </td>
+        <td class="Doors{{room.name}}">
+            {# Doors Pop-up #}
+            <button class="icon-btn buttonPopupDoor"><img src="./static/images/puerta.png" class="icon-light"></button>
+            <div id="doorsStatus-{{room.name}}"></div>
+            <div class="modal popupDoor">
+                <div class="modal-content">
+                    <button class="closePopupDoor">Close</button>
+                    <h2>Doors - {{ room.name }} </h2>
+                    <div>
+                        {% for door_connects in room.doorConnects %}
+                        <div class="door-row">
+                            <p>Door {{ door_connects.door.id }}
+                                {% for connected_room in door_connects.door.doorConnects %}
+                                {% if connected_room.room != room %}
+                                - {{ connected_room.room.name }}
+                                {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p class="switch-options">CLOSED</p>
+                            <label class="switch">
+                                <input type="checkbox" id="doorCheckbox_{{ door_connects.door.id }}"
+                                    data-door-id="{{ door_connects.door.id }}" {% if door_connects.door.doorOpen and
+                                    door_connects.door.doorOpen[-1].is_open %}checked{% endif %}
+                                    onclick="updateDoorStatus(this, '{{room.name}}')">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="switch-options">OPEN</p>
+                            <form action="/deleteDoor/{{ door_connects.door_id }}" method="POST">
+                                <button class="icon-btn"><img src="./static/images/delete.png"
+                                        class="delete-img"></button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="buttonPopupAddDoor">Add Door</button>
+                </div>
+            </div>
+            <div class="modal popupAddDoor">
+                <div class="modal-content">
+                    <button class="closePopupAddDoor">Back</button>
+                    <h2>Add Door - {{ room.name }} </h2>
+                    <form id="doorSelectionForm" action="/addDoor/{{room.name}}" method="POST">
+                        <div class="rooms-grid">
+                            <input type="hidden" id="selectedRoom{{room.name}}" name="selectedRoom" value="">
+                            <p class="room-item" onclick="selectRoom(this, '{{ room.name }}', 'placeholder')">X</p>
+                            {% for possible_room in rooms %}
+                            {% if possible_room != room %}
+                            <p class="room-item"
+                                onclick="selectRoom(this, '{{ room.name }}','{{ possible_room.name }}')">{{
+                                possible_room.name }}</p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <button class="buttonPopupAddDoorSubmit" type="submit"
+                            onclick="return validateSelection('{{ room.name }}')">Add Door</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+        <td class="Lights{{room.name}}">
+            {# Lights Pop-up #}
+            <button class="icon-btn buttonPopupLight"><img src="./static/images/light.png" class="icon-light"></button>
+            <div id="lightsStatus-{{room.name}}"></div>
+            <div class="modal popupLight">
+                <div class="modal-content">
+                    <button class="closePopupLight">Close</button>
+                    <h2>Lights - {{ room.name }} </h2>
+
+                    <div>
+                        {% for light in room.lights %}
+                        <div class="light-row">
+                            <p>Light {{ light.id }}</p>
+                            <p class="switch-options">OFF</p>
+                            <label class="switch">
+                                <input type="checkbox" id="lightCheckbox_{{ light.id }}" data-light-id="{{ light.id }}"
+                                    {% if light.lightOn and light.lightOn[-1].is_on %}checked{% endif %}
+                                    onclick="updateLightStatus(this,'{{room.name}}')">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="switch-options">ON</p>
+                            <form action="/deleteLight/{{ light.id }}" method="POST">
+                                <button class="icon-btn"><img src="./static/images/delete.png"
+                                        class="delete-img"></button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <form action="/addLight/{{ room.name }}" method="POST">
+                        <button class="popupAddLight">Add Light</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+        <td class="Ventilators{{room.name}}">
+            {# Ventilators Pop-up #}
+            <button class="icon-btn buttonPopupVentilator"><img src="./static/images/ventilator.png"
+                    class="icon-fan"></button>
+            <div id="ventilatorsStatus-{{room.name}}"></div>
+            <div class="modal popupVentilator">
+                <div class="modal-content">
+                    <button class="closePopupVentilator">Close</button>
+                    <h2>Ventilator - {{ room.name }} </h2>
+                    <div>
+                        {% for ventilator in room.ventilators %}
+                        <div class="window-row">
+                            <p>Ventilator {{ ventilator.id }}</p>
+                            <p class="switch-options">OFF</p>
+                            <label class="switch">
+                                <input type="checkbox" id="ventilatorCheckbox_{{ ventilator.id }}"
+                                    data-ventilator-id="{{ ventilator.id }}" {% if ventilator.ventilatorOn and
+                                    ventilator.ventilatorOn[-1].is_on %}checked{% endif %}
+                                    onclick="updateVentilatorStatus(this,'{{room.name}}')">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="switch-options">ON</p>
+                            <form action="/deleteVentilator/{{ ventilator.id }}" method="POST">
+                                <button class="icon-btn"><img src="./static/images/delete.png"
+                                        class="delete-img"></button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <form action="/addVentilator/{{ room.name }}" method="POST">
+                        <button class="popupAddVentilator">Add Ventilator</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+        <td class="Windows{{room.name}}">
+            {# Windows Pop-up #}
+            <button class="icon-btn buttonPopupWindow"><img src="./static/images/ventana.png"
+                    class="icon-window"></button>
+            <div id="windowsStatus-{{room.name}}"></div>
+            <div class="modal popupWindow">
+                <div class="modal-content">
+                    <button class="closePopupWindow">Close</button>
+                    <h2>Windows - {{ room.name }} </h2>
+                    <div>
+                        {% for window in room.windows %}
+                        <div class="window-row">
+                            <p>Window {{ window.id }}</p>
+                            <p class="switch-options">CLOSE</p>
+                            <label class="switch">
+                                <input type="checkbox" id="windowCheckbox_{{ window.id }}"
+                                    data-window-id="{{ window.id }}" {% if window.windowOpen and
+                                    window.windowOpen[-1].is_open %}checked{% endif %}
+                                    onclick="updateWindowStatus(this, '{{room.name}}')">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="switch-options">OPEN</p>
+                            <form action="/deleteWindow/{{ window.id }}" method="POST">
+                                <button class="icon-btn"><img src="./static/images/delete.png"
+                                        class="delete-img"></button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <form action="/addWindow/{{ room.name }}" method="POST">
+                        <button class="popupAddWindow">Add Window</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+        <td>
+            {# Edit Pop-up #}
+            <button class="icon-btn popupEditRoom"><img src="./static/images/update.png" class="icon-gear"></button>
+            <div class="modal popup2">
+                <div class="modal-content">
+                    <button class="closePopup2">Close</button>
+                    <h2>Edit Room</h2>
+                    <form action="/edit/{{ room.name }}" method="POST">
+                        <input type="text" placeholder="Room Name" name="room_name">
+                        <input type="text" placeholder="Room Size (m²)" name="room_size">
+                        <button>Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </td>
+        {# Delete #}
+        <td>
+            <form action="/delete/{{ room.name }}" method="POST">
+                <button class="icon-btn"><img src="./static/images/delete.png" class="icon-bin"></button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+</div>
+<button id="popupCreateRoom">Add Room</button>
+
+<div id="popup1" class="modal">
+
+    <div class="modal-content">
+        <button id="closePopup1"> Close </button>
+        <h2>Create room</h2>
+        <form action="/add" method="POST">
+            <input type="text" placeholder="Room Name" name="room_name">
+            <input type="text" placeholder="Room Size (m²)" name="room_size">
+            <button>Add Room</button>
+        </form>
+    </div>
+</div>
+<div id="custom-snackbar">Custom Snackbar Message</div>
+{% endblock %}
